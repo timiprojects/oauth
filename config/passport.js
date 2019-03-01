@@ -6,19 +6,23 @@ module.exports = (passport) => {
   passport.use(new facebookStrategy({
       clientID: keys.FB_APP_CLIENT_ID,
       clientSecret: keys.FB_APP_CLIENT_SECRET,
-      callbackURL: "http://127.0.0.1:12345/api/home"
+      callbackURL: "https://nodeoauth.herokuapp.com/api/home"
     },
     function (accessToken, refreshToken, profile, done) {
-      User.findById(profile.id, (err, user) => {
+      User.findOne({fbId: profile.id}, (err, user) => {
         if (err) return done(null, false, {
           message: 'Error Found!'
         })
         if (!user) {
             const newuser = new User({
-
+              fbId: profile.id,
+              firstname: profile.name.givenName,
+              lastname: profile.name.familyName,
+              username: profile.displayName,
+              email: profile.emails[0].type
             })
-            newuser.save().then((userInfo)=>{
-              return done(null, userInfo);
+            newuser.save().then((user)=>{
+              return done(null, user);
             })
         } 
         return done(null, user);

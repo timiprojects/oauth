@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
+    fbId: String,
     firstname: {
         type: String
     },
@@ -15,7 +16,8 @@ const UserSchema = new mongoose.Schema({
         unique: true
     },
     password: {
-        type: String
+        type: String,
+        default: ''
     },
     created_at: {
         type: Date,
