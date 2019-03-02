@@ -1,8 +1,8 @@
 const express = require('express')
-const uuid = require('uuid')
+//const uuid = require('uuid')
 const passport = require('passport')
 const session = require('express-session')
-const FileStore = require('session-file-store')(session)
+//const FileStore = require('session-file-store')(session)
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const keys = require('./config/keys')
@@ -29,19 +29,19 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 app.use(session({
-    genid: (req) => {
-        return uuid() // use UUIDs for session IDs
-    },
-    store: new FileStore(),
-    secret: 'oauth',
-    resave: false,
+    // genid: (req) => {
+    //     return uuid() // use UUIDs for session IDs
+    // },
+    //store: new FileStore(),
+    secret: 'oauthsave',
+    resave: true,
     saveUninitialized: true,
 }))
 
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/api', require('./routes/route'))
+app.use('/auth', require('./routes/route'))
 
 const PORT = process.env.PORT || 12345
 

@@ -15,9 +15,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    password: {
+    accessToken: {
         type: String,
-        default: ''
+        unique: true
     },
     created_at: {
         type: Date,

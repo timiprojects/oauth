@@ -12,14 +12,15 @@ router.get('/', (req, res)=>{
 
 router.get('/authenticate', (req, res, next)=>{
     passport.authenticate('facebook', {
-        successRedirect: '/api/home',
-        successMessage: 'Login Successful',
-        failureRedirect: '/api'
+        scope: ['email', 'public_profile', 'user_location']
     })(req,res,next)
 })
 
+router.get('/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/'}), function(req, res) {
+     res.redirect('/home');
+})
+
 router.get('/home', ensureAuthenticated, (req, res)=>{
-    console.log(req.profile)
     res.render('pages/home', {
         title: 'home'
     });
