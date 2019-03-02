@@ -6,9 +6,9 @@ module.exports = (passport) => {
   passport.use(new FacebookStrategy({
       clientID: keys.FB_APP_CLIENT_ID,
       clientSecret: keys.FB_APP_CLIENT_SECRET,
-      callbackURL: "http://localhost:12345/auth/facebook/callback" || "https://nodeoauth.herokuapp.com/auth/facebook/callback",
-      // passReqToCallback : true,
-      //enableProof: true
+      callbackURL: "https://nodeoauth.herokuapp.com/auth/facebook/callback",
+      passReqToCallback : true,
+      enableProof: true
     },
     function (accessToken, refreshToken, profile, done) {
       User.findOne({fbId: profile.id}, (err, user) => {
