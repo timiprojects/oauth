@@ -18,7 +18,7 @@ mongoose.connect(keys.MONGO_DB_LINK, { useNewUrlParser: true }).then(() => {
     console.log("MongoDB Connected")
 })
 
-app.use(cors())
+
 
 app.use(expressLayouts)
 app.set('view engine', 'ejs')
@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
+
 
 app.use(session({
     // genid: (req) => {
@@ -40,6 +41,14 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.use(cors())
+
+app.use((req,res,next)=>{
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', ['Content-Type','Authorization',])
+    next()
+})
 
 app.use('/auth', require('./routes/route'))
 

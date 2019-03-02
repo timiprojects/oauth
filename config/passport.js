@@ -6,8 +6,7 @@ module.exports = (passport) => {
   passport.use(new FacebookStrategy({
       clientID: keys.FB_APP_CLIENT_ID,
       clientSecret: keys.FB_APP_CLIENT_SECRET,
-      callbackURL: "https://nodeoauth.herokuapp.com/auth/facebook/callback",
-      passReqToCallback : true,
+      callbackURL: "https://nodeoauth.heokuapp.com/auth/facebook/callback",
       enableProof: true
     },
     function (accessToken, refreshToken, profile, done) {
@@ -23,7 +22,7 @@ module.exports = (passport) => {
             firstname: profile.name.givenName,
             lastname: profile.name.familyName,
             username: profile.displayName,
-            email: profile.emails[0].type,
+            //email: profile.emails['type'][0],
             accessToken
           })
           newuser.save().then((new_user)=>{
@@ -39,8 +38,8 @@ module.exports = (passport) => {
     done(null, user);
   });
 
-  passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
+  passport.deserializeUser(function (obj, done) {
+    User.findById(obj, function (err, user) {
       done(err, user);
     });
   });

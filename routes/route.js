@@ -12,18 +12,16 @@ router.get('/', (req, res)=>{
 
 router.get('/authenticate', (req, res, next)=>{
     passport.authenticate('facebook', {
-        scope: ['email', 'public_profile', 'user_location']
+        scope: ['email']
     })(req,res,next)
 })
 
-router.get('/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/'}), function(req, res) {
-     res.redirect('/home');
+router.get('/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/auth'}), function(req, res) {
+     res.send(req.user);
 })
 
-router.get('/home', ensureAuthenticated, (req, res)=>{
-    res.render('pages/home', {
-        title: 'home'
-    });
+router.get('/me', ensureAuthenticated, (req, res)=>{
+    res.send(req.user);
 })
 
 module.exports = router
